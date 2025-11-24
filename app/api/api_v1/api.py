@@ -2,10 +2,10 @@ from fastapi import APIRouter
 
 
 # import your endpoints here
-# from app.api.api_v1.endpoints import (
-#     admin,
-#     business,
-# )
+from app.api.api_v1.endpoints import (
+    admin,
+    # business,
+)
 
 api_router = APIRouter()
 
@@ -14,4 +14,7 @@ api_router = APIRouter()
 # api_router.include_router(business.router, prefix="/business")
 
 # Admin routes
-# api_router.include_router(admin.router, prefix="/admin")
+api_router.include_router(
+    admin.router,
+    prefix="/admin",
+)
