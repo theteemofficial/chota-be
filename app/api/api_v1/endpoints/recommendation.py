@@ -18,7 +18,7 @@ def recommend_business(data: RecommendationCreate, session: CommonSession):
     """
     Endpoint for users to recommend a business
     """
-    # validate category
+    # validate category here
 
     recommendation = ra.create_recommendation(session=session, data=data)
     return recommendation
