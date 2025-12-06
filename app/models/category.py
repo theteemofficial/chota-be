@@ -2,11 +2,13 @@
 from sqlmodel import Field, Relationship
 from typing import Optional, List, TYPE_CHECKING
 from .business_category import BusinessCategory
+from .recommendation_category import RecommendationCategory
 
 from .base import ModelBase, SchemaBase
 
 if TYPE_CHECKING:
     from .business import Business
+    from .recommendation import Recommendation
 
 
 class CategoryBase(ModelBase):
@@ -25,6 +27,9 @@ class Category(CategoryBase, table=True):
 
     businesses: List["Business"] = Relationship(
         back_populates="categories", link_model=BusinessCategory
+    )
+    recommendations: List["Recommendation"] = Relationship(
+        back_populates="categories", link_model=RecommendationCategory
     )
 
 

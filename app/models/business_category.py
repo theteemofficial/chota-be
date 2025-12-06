@@ -4,7 +4,8 @@ from typing import TYPE_CHECKING
 from .base import ModelBase
 
 if TYPE_CHECKING:
-    pass
+    from .business import Business  # noqa: F401
+    from .category import Category  # noqa: F401
 
 
 class BusinessCategory(ModelBase, table=True):

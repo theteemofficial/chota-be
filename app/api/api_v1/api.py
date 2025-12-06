@@ -2,16 +2,15 @@ from fastapi import APIRouter
 
 
 # import your endpoints here
-from app.api.api_v1.endpoints import (
-    admin,
-    # business,
-)
+from app.api.api_v1.endpoints import admin, recommendation
 
 api_router = APIRouter()
 
 
 # routes
-# api_router.include_router(business.router, prefix="/business")
+api_router.include_router(
+    recommendation.router, prefix="/recommendation", tags=["Recommendation/Business"]
+)
 
 # Admin routes
 api_router.include_router(
