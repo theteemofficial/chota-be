@@ -14,7 +14,7 @@ from app.actions.account_admin import AdminAction
 from fastapi.security import OAuth2PasswordRequestForm
 
 # login route will give you user JWT token
-reusable_oauth2 = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/admin/login")
+reusable_oauth2 = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/admin/auth/login")
 
 
 def get_session() -> Generator:

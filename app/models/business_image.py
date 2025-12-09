@@ -1,6 +1,6 @@
 from .base import ModelBase, SchemaBase
 from sqlmodel import Field, Relationship
-from typing import TYPE_CHECKING, Optional, List
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
     from .business import Business
@@ -16,7 +16,7 @@ class BusinessImage(BusinessImageBase, table=True):
 
 
 class BusinessImageCreate(SchemaBase):
-    images: List[str]
+    images: str
 
 
 class BusinessImageUpdate(SchemaBase):
