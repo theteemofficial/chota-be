@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 class CategoryBase(ModelBase):
     name: str
-    parent_id: Optional[int] = Field(default=None, foreign_key="category.id")
+    parent_id: Optional[int] = Field(default=None, foreign_key="category.id", nullable=True)
 
 
 class Category(CategoryBase, table=True):
@@ -23,7 +23,9 @@ class Category(CategoryBase, table=True):
     )
 
     # sub_category
-    children: List["Category"] = Relationship(back_populates="parent")
+    children: List["Category"] = Relationship(
+        back_populates="parent", sa_relationship_kwargs={"cascade": "all, delete"}
+    )
 
     businesses: List["Business"] = Relationship(
         back_populates="categories", link_model=BusinessCategory
@@ -33,14 +35,21 @@ class Category(CategoryBase, table=True):
     )
 
 
-class CategoryCreate(CategoryBase):
-    pass
+class CategoryCreate(SchemaBase):
+    name: str
+    parent_id: Optional[int] = None
 
 
 class CategoryUpdate(SchemaBase):
     name: Optional[str] = None
-    category_id: Optional[int] = None
+    parent_id: Optional[int] = None
+
+
+class SubCategory(SchemaBase):
+    id: int
+    name: str
 
 
 class CategoryRead(CategoryBase):
     id: int
+    children: List[SubCategory] = []

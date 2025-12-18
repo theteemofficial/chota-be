@@ -24,6 +24,7 @@ poetry-dotenv-plugin="0.2.0"
 httpx = "^0.24.1"
 asyncio = "^3.4.3"
 sqlmodel = "^0.0.22"
+faker = "19.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
