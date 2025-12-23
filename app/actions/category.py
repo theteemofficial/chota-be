@@ -43,15 +43,13 @@ class CategoryAction:
     def update_category(
         self, session: Session, category_id: int, update_data: CategoryUpdate
     ) -> Optional[Category]:
-        category = session.get(Category, category_id)
+        category = self.get_by_id(session, category_id)
 
         if not category:
             return None
 
-        # Convert update_data to dictionary, excluding unset fields
         update_dict = update_data.dict(exclude_unset=True)
 
-        # Update the event with new values
         for key, value in update_dict.items():
             setattr(category, key, value)
 
@@ -60,18 +58,18 @@ class CategoryAction:
         session.refresh(category)
         return category
 
-    def delete_category(self, session: Session, category_id: int) -> bool:
-        """Delete a category by ID"""
-        category = session.get(Category, category_id)
-        if not category:
-            return False
+    def get_by_ids(self, session: Session, ids: list[int]) -> list[Category]:
+        return session.query(Category).filter(Category.id.in_(ids)).all()
 
+    def delete_category(self, session: Session, category: Category) -> bool:
+        """Delete a category by ID"""
         session.delete(category)
         session.commit()
-        return True
 
     def random(self, **data):
-        return CategoryCreate(name=data.get("name", fake.name()), parent_id=data.get("parent_id"))
+        return CategoryCreate(
+            name=data.get("name", self.normalize_name(fake.name())), parent_id=data.get("parent_id")
+        )
 
     def create_random(self, session: Session, **dict: dict) -> Category:
         return self.create_category(session=session, data=self.random(**dict))

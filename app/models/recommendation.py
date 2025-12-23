@@ -2,7 +2,7 @@ from pydantic.networks import EmailStr
 from sqlmodel import Field, Relationship, Column, TEXT
 from .recommendation_category import RecommendationCategory
 from .recommendation_image import RecommendationImageCreate, RecommendationImageRead
-from .category import CategoryRead
+from .category import CategoryIDRead
 from .business import BusinessStatus
 from typing import Optional, List, TYPE_CHECKING
 from datetime import time
@@ -42,7 +42,24 @@ class Recommendation(RecommendationBase, table=True):
     )
 
 
-class RecommendationCreate(RecommendationBase):
+class RecommendationCreate(SchemaBase):
+    name: str
+    email: EmailStr
+    description: str
+    address: str
+    phone: str
+    cover_image: str
+    business_logo: str
+    website: Optional[str]
+    facebook: Optional[str]
+    instagram: Optional[str]
+    twitter: Optional[str]
+    linkedin: Optional[str]
+    youtube: Optional[str]
+    open_time: time
+    close_time: time
+    always_open: Optional[bool]
+    recommender_email: EmailStr
     category_ids: List[int]
     images: List[RecommendationImageCreate]
 
@@ -71,5 +88,5 @@ class RecommendationUpdate(SchemaBase):
 
 class RecommendationRead(RecommendationBase):
     id: int
-    categories: List[CategoryRead]
+    categories: List[CategoryIDRead]
     images: List[RecommendationImageRead]

@@ -45,11 +45,14 @@ class CategoryUpdate(SchemaBase):
     parent_id: Optional[int] = None
 
 
-class SubCategory(SchemaBase):
+class SubCategory(CategoryBase):
     id: int
-    name: str
 
 
 class CategoryRead(CategoryBase):
     id: int
     children: List[SubCategory] = []
+
+
+class CategoryIDRead(CategoryBase):
+    id: int

@@ -28,6 +28,9 @@ def test_admin_login_success(client: TestClient, db_session: Session):
     assert "access_token" in json
     assert json["token_type"] == "bearer"
     assert json["account"]["email"] == "admin@example.com"
+    token = json["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+    return headers
 
 
 def test_admin_login_invalid_password(client, db_session):

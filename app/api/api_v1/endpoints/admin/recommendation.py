@@ -21,10 +21,7 @@ def get_recommendations(
     """
     Endpoint for admin to get all business recommendations
     """
-    try:
-        return ra.get_all(session)
-    except Exception as e:
-        raise HTTPException(500, detail=str(e))
+    return ra.get_all(session)
 
 
 @router.get("/{id}", response_model=RecommendationRead)
@@ -36,15 +33,10 @@ def get_recommendation(
     """
     Endpoint for admin to get a business recommendation by id
     """
-    try:
-        recommendation = ra.get_by_id(session, id)
 
-        if not recommendation:
-            raise HTTPException(404, detail="Recommendation not found")
+    recommendation = ra.get_by_id(session, id)
 
-        return recommendation
+    if not recommendation:
+        raise HTTPException(404, detail="Recommendation not found")
 
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(500, detail=str(e))
+    return recommendation
