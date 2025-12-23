@@ -21,10 +21,7 @@ def get_all_category(
     """
     Endpoint for admin to get all category
     """
-    try:
-        return ca.get_all(session)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    return ca.get_all(session)
 
 
 @router.get("/{id}", response_model=CategoryRead)
@@ -36,18 +33,12 @@ def get_category(
     """
     Endpoint for admin to get a category by id
     """
-    try:
-        category = ca.get_by_id(session, id)
+    category = ca.get_by_id(session, id)
 
-        if not category:
-            raise HTTPException(status_code=404, detail="Category not found")
+    if not category:
+        raise HTTPException(status_code=404, detail="Category not found")
 
-        return category
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    return category
 
 
 @router.post("/", response_model=CategoryRead)
@@ -91,7 +82,7 @@ def update_category(
     return ca.update_category(session=session, category_id=category_id, update_data=category)
 
 
-@router.delete("/{catgeory_id}")
+@router.delete("/{category_id}")
 def delete_category(
     *,
     session: CommonSession,
@@ -100,8 +91,25 @@ def delete_category(
 ) -> Any:
     """
     delete a catgeory and its sub-categories by id.
+    Prevent deletion if category is assigned to any business.
     """
-    deleted_category = ca.delete_category(session=session, category_id=category_id)
-    if not deleted_category:
-        raise HTTPException(status_code=404, detail="category not found")
+    category = ca.get_by_id(session=session, category_id=category_id)
+    if not category:
+        raise HTTPException(status_code=404, detail="Category not found")
+
+    if category.businesses:
+        raise HTTPException(
+            status_code=409,
+            detail="Category is assigned to one or more businesses",
+        )
+
+    for child in category.children:
+        if child.businesses:
+            raise HTTPException(
+                status_code=409,
+                detail="One or more sub-categories are assigned to businesses",
+            )
+
+    ca.delete_category(session=session, category=category)
+
     return {"message": "category and its sub-categories deleted successfully"}

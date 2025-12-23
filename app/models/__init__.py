@@ -14,7 +14,7 @@ from .business_image import (
     BusinessImageUpdate,
 )
 from .business import Business, BusinessRead, BusinessCreate, BusinessUpdate, BusinessStatus
-from .category import Category, CategoryRead, CategoryUpdate, CategoryCreate
+from .category import Category, CategoryRead, CategoryIDRead, CategoryUpdate, CategoryCreate
 from .recommendation import (
     Recommendation,
     RecommendationCreate,
